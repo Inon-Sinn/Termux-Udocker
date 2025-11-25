@@ -67,7 +67,7 @@ else
       fi; \
       command -v xmlstarlet &>/dev/null || { apt update && apt install -y --no-install-recommends xmlstarlet; }; \
       xmlstarlet ed --inplace -u "//InternalHttpPort" -v "$_PORT" -u "//PublicHttpPort" -v "$_PORT" /config/config/network.xml &>/dev/null; \
-      exec /jellyfin/jellyfin --nonetchange
+      JELLYFIN_NO_JEMALLOC=1 exec /jellyfin/jellyfin --nonetchange
   '
 fi
 
