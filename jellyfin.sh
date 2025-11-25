@@ -3,7 +3,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/source.env"
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-IMAGE_NAME="jellyfin/jellyfin:10.9.11"
+IMAGE_NAME="jellyfin/jellyfin:10.10.7"
 
 CONTAINER_NAME="jellyfin-server"
 
