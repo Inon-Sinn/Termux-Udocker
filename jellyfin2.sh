@@ -46,9 +46,13 @@ rm -rf /sdcard/.test_has_read_write_media
 if [ -n "$1" ]; then
   unset cmd
   cmd="$*"
-  env -u LD_PRELOAD -u LD_LIBRARY_PATH udocker_run --entrypoint "bash -c" -p "$PORT:8096" -e DOTNET_GCHeapHardLimit="1C0000000" -e JELLYFIN_NO_JEMALLOC=1 -v "$(proot_write_tmp "$(cat "$(pwd)/libnetstub.sh")"):/.libnetstub/libnetstub.sh" -v "$DATA_DIR/config:/config" -v "$DATA_DIR/cache:/cache" $MEDIA_DIR_CONFIG "$CONTAINER_NAME" ". /.libnetstub/libnetstub.sh; $cmd"
+  unset LD_PRELOAD
+  unset LD_LIBRARY_PATH
+  udocker_run --entrypoint "bash -c" -p "$PORT:8096" -e DOTNET_GCHeapHardLimit="1C0000000" -v "$(proot_write_tmp "$(cat "$(pwd)/libnetstub.sh")"):/.libnetstub/libnetstub.sh" -v "$DATA_DIR/config:/config" -v "$DATA_DIR/cache:/cache" $MEDIA_DIR_CONFIG "$CONTAINER_NAME" ". /.libnetstub/libnetstub.sh; $cmd"
 else
-  env -u LD_PRELOAD -u LD_LIBRARY_PATH udocker_run --entrypoint "bash -c" -p "$PORT:8096" -e _PORT="$PORT" -e DOTNET_GCHeapHardLimit="1C0000000" -e JELLYFIN_NO_JEMALLOC=1 -v "$(proot_write_tmp "$(cat "$(pwd)/libnetstub.sh")"):/.libnetstub/libnetstub.sh" -v "$DATA_DIR/config:/config" -v "$DATA_DIR/cache:/cache" $MEDIA_DIR_CONFIG "$CONTAINER_NAME" ' \
+  unset LD_PRELOAD
+  unset LD_LIBRARY_PATH
+  udocker_run --entrypoint "bash -c" -p "$PORT:8096" -e _PORT="$PORT" -e DOTNET_GCHeapHardLimit="1C0000000" -v "$(proot_write_tmp "$(cat "$(pwd)/libnetstub.sh")"):/.libnetstub/libnetstub.sh" -v "$DATA_DIR/config:/config" -v "$DATA_DIR/cache:/cache" $MEDIA_DIR_CONFIG "$CONTAINER_NAME" ' \
       echo -e "127.0.0.1   localhost.localdomain localhost\n::1         localhost.localdomain localhost ip6-localhost ip6-loopback\nfe00::0     ip6-localnet\nff00::0     ip6-mcastprefix\nff02::1     ip6-allnodes\nff02::2     ip6-allrouters\nff02::3     ip6-allhosts" >/etc/hosts; \
       if [[ ! -f /.libnetstub/libnetstub.so && -f /.libnetstub/libnetstub.sh ]]; then \
           export DEBIAN_FRONTEND=noninteractive && \
@@ -67,7 +71,7 @@ else
       fi; \
       command -v xmlstarlet &>/dev/null || { apt update && apt install -y --no-install-recommends xmlstarlet; }; \
       xmlstarlet ed --inplace -u "//InternalHttpPort" -v "$_PORT" -u "//PublicHttpPort" -v "$_PORT" /config/config/network.xml &>/dev/null; \
-      JELLYFIN_NO_JEMALLOC=1 exec /jellyfin/jellyfin --nonetchange
+      exec /jellyfin/jellyfin --nonetchange
   '
 fi
 
