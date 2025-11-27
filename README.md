@@ -25,7 +25,7 @@ https://github.com/indigo-dc/udocker
 In Termux -
 
 ```
-pkg i git -y && git clone --depth 1 https://github.com/George-Seven/Termux-Udocker ~/Termux-Udocker; git -C ~/Termux-Udocker pull; bash ~/Termux-Udocker/install_udocker.sh
+pkg i git -y && git clone --depth 1 https://github.com/Inon-Sinn/Termux-Udocker ~/Termux-Udocker; git -C ~/Termux-Udocker pull; bash ~/Termux-Udocker/install_udocker.sh
 ```
 
 And done.
